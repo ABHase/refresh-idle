@@ -1,26 +1,23 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { incrementTime } from "./store/gameSlice";
+import { RootState } from "./store/store";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const GameComponent = () => {
+  const dispatch = useDispatch();
 
-export default App;
+  const time = useSelector((state: RootState) => state.game.time);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      dispatch(incrementTime());
+    }, 1000); // Increment time every second
+
+    return () => clearInterval(timer);
+  }, [dispatch]);
+
+  // Add JSX for your game component
+  return <div>Game Time: {time}</div>;
+};
+
+export default GameComponent;
